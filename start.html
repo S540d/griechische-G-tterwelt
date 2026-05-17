@@ -100,6 +100,41 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
   #tree-panel{height:calc(100vh - 110px)}
 }
 
+/* QUIZ */
+#quiz-panel{position:relative;z-index:10;max-width:680px;margin:0 auto;padding:40px 20px 80px}
+.quiz-header{text-align:center;margin-bottom:32px}
+.quiz-title{font-family:'Cinzel Decorative',serif;font-size:clamp(1.2rem,4vw,1.8rem);color:var(--gold-light);margin-bottom:8px}
+.quiz-subtitle{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase}
+.quiz-progress{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+.quiz-bar-wrap{flex:1;height:4px;background:var(--surface2);border-radius:2px;overflow:hidden}
+.quiz-bar{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold));border-radius:2px;transition:width .4s}
+.quiz-count{font-family:'Cinzel',serif;font-size:.65rem;color:var(--gold-dim);white-space:nowrap}
+.quiz-score{font-family:'Cinzel',serif;font-size:.65rem;color:var(--gold);white-space:nowrap}
+.quiz-question-card{background:var(--surface);border:1px solid rgba(201,168,76,.2);border-radius:4px;padding:28px;margin-bottom:20px}
+.quiz-q-label{font-family:'Cinzel',serif;font-size:.6rem;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:14px}
+.quiz-q-text{font-size:1.05rem;color:var(--text);line-height:1.7}
+.quiz-q-sym{font-size:2.4rem;margin-bottom:10px;display:block}
+.quiz-options{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:500px){.quiz-options{grid-template-columns:1fr}}
+.quiz-opt{font-family:'Cinzel',serif;font-size:.78rem;letter-spacing:.05em;padding:12px 16px;background:var(--surface2);border:1px solid rgba(201,168,76,.2);color:var(--text);cursor:pointer;border-radius:3px;text-align:left;transition:all .25s;line-height:1.4}
+.quiz-opt:hover:not([disabled]){border-color:var(--gold);color:var(--gold-light);background:rgba(201,168,76,.08)}
+.quiz-opt.correct{border-color:#5a8a3a;background:rgba(90,138,58,.15);color:#8aaa4a}
+.quiz-opt.wrong{border-color:#8a3a3a;background:rgba(138,58,58,.15);color:#c45a5a}
+.quiz-opt.reveal{border-color:#5a8a3a;background:rgba(90,138,58,.08);color:#8aaa4a}
+.quiz-feedback{min-height:44px;padding:10px 16px;border-radius:3px;font-size:.88rem;color:var(--text);line-height:1.6;margin-bottom:16px;display:none}
+.quiz-feedback.show{display:block}
+.quiz-feedback.ok{background:rgba(90,138,58,.12);border:1px solid rgba(90,138,58,.3)}
+.quiz-feedback.fail{background:rgba(138,58,58,.12);border:1px solid rgba(138,58,58,.3)}
+.quiz-next-btn{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;padding:11px 28px;background:var(--gold);border:none;color:var(--obsidian);cursor:pointer;border-radius:2px;transition:opacity .2s;display:none}
+.quiz-next-btn.show{display:inline-block}
+.quiz-next-btn:hover{opacity:.85}
+.quiz-result{text-align:center;padding:40px 20px}
+.quiz-result-score{font-family:'Cinzel Decorative',serif;font-size:3rem;color:var(--gold-light);margin-bottom:8px}
+.quiz-result-label{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:24px}
+.quiz-result-msg{font-size:1rem;color:var(--text);line-height:1.8;margin-bottom:28px}
+.quiz-restart-btn{font-family:'Cinzel',serif;font-size:.75rem;letter-spacing:.15em;text-transform:uppercase;padding:11px 28px;background:transparent;border:1px solid var(--gold);color:var(--gold);cursor:pointer;border-radius:2px;transition:all .25s}
+.quiz-restart-btn:hover{background:rgba(201,168,76,.1)}
+
 /* SVG node styles (inline via JS) */
 
 /* MODAL */
@@ -154,6 +189,7 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
 <nav class="tab-nav">
   <button class="tab-btn active" data-tab="pantheon">&#9676; Pantheon</button>
   <button class="tab-btn" data-tab="tree">&#9753; Stammbaum</button>
+  <button class="tab-btn" data-tab="quiz">&#10067; Quiz</button>
 </nav>
 
 <!-- PANTHEON PANEL -->
@@ -176,7 +212,7 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
     </div>
   </div>
   <div class="grid-wrap">
-    <div class="count-display" id="count-display">Alle 27 Gottheiten</div>
+    <div class="count-display" id="count-display">Alle 26 Gottheiten</div>
     <div class="gods-grid" id="gods-grid">
       <div class="no-results" id="no-results">Keine Gottheiten gefunden</div>
     </div>
@@ -213,6 +249,40 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
     <div><div class="leg-line" style="background:#8b3f8c"></div><span>Paarbeziehung</span></div>
     <div><div class="leg-dot" style="background:#c9a84c;border:2px solid #e8c97a"></div><span>Olympier</span></div>
     <div><div class="leg-dot" style="background:#252538;border:2px solid #7a6a4a"></div><span>Titan / Sonstiger</span></div>
+  </div>
+</div>
+
+<!-- QUIZ PANEL -->
+<div class="panel" id="quiz-panel">
+  <div id="quiz-panel-inner">
+    <div id="quiz-start-screen" style="text-align:center;padding:60px 20px">
+      <div style="font-size:3rem;margin-bottom:16px">&#10067;</div>
+      <div class="quiz-title" style="font-family:'Cinzel Decorative',serif;font-size:clamp(1.2rem,4vw,1.8rem);color:var(--gold-light);margin-bottom:8px">Olympos-Quiz</div>
+      <p style="font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:24px">Teste dein Wissen &uuml;ber die griechischen G&ouml;tter</p>
+      <p style="color:var(--text-dim);font-size:.95rem;margin-bottom:32px;max-width:400px;margin-left:auto;margin-right:auto">10 zuf&auml;llige Fragen aus dem Pantheon &ndash; Symbole, Attribute, Eltern und Dom&auml;nen.</p>
+      <button class="quiz-next-btn show" id="quiz-start-btn" style="font-size:.8rem;padding:13px 36px">Quiz starten &#8594;</button>
+    </div>
+    <div id="quiz-game-screen" style="display:none;max-width:680px;margin:0 auto;padding:32px 20px 80px">
+      <div class="quiz-progress">
+        <div class="quiz-bar-wrap"><div class="quiz-bar" id="quiz-bar" style="width:0%"></div></div>
+        <span class="quiz-count" id="quiz-count">1 / 10</span>
+        <span class="quiz-score" id="quiz-score-live">0 &#9733;</span>
+      </div>
+      <div class="quiz-question-card">
+        <div class="quiz-q-label" id="quiz-q-type">Frage</div>
+        <div class="quiz-q-sym" id="quiz-q-sym" style="display:none"></div>
+        <div class="quiz-q-text" id="quiz-q-text"></div>
+      </div>
+      <div class="quiz-options" id="quiz-options"></div>
+      <div class="quiz-feedback" id="quiz-feedback"></div>
+      <button class="quiz-next-btn" id="quiz-next-btn">N&auml;chste Frage &#8594;</button>
+    </div>
+    <div id="quiz-result-screen" style="display:none;text-align:center;padding:60px 20px">
+      <div class="quiz-result-score" id="quiz-result-score"></div>
+      <div class="quiz-result-label">von 10 Fragen richtig</div>
+      <p class="quiz-result-msg" id="quiz-result-msg"></p>
+      <button class="quiz-restart-btn" id="quiz-restart-btn">Nochmal spielen &#8635;</button>
+    </div>
   </div>
 </div>
 
@@ -343,11 +413,13 @@ for (var ti = 0; ti < tabBtns.length; ti++) {
     var t = this.getAttribute('data-tab');
     document.getElementById('pantheon-panel').style.display = t === 'pantheon' ? 'block' : 'none';
     document.getElementById('tree-panel').style.display = t === 'tree' ? 'block' : 'none';
+    document.getElementById('quiz-panel').style.display = t === 'quiz' ? 'block' : 'none';
     if (t === 'tree' && !treeBuilt) { buildTree(); treeBuilt = true; }
   });
 }
 document.getElementById('pantheon-panel').style.display = 'block';
 document.getElementById('tree-panel').style.display = 'none';
+document.getElementById('quiz-panel').style.display = 'none';
 
 // ── CARDS ─────────────────────────────────────────────────────
 var grid = document.getElementById('gods-grid');
@@ -776,6 +848,159 @@ function buildTree() {
     applyT();
   });
 }
+
+// ═══════════════════════════════════════════════════════════════
+// ── QUIZ ───────────────────────────────────────────────────────
+// ═══════════════════════════════════════════════════════════════
+
+(function() {
+  var TOTAL = 10;
+  var questions = [], current = 0, score = 0;
+
+  function shuffle(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+    }
+    return a;
+  }
+
+  function pick(arr, n) { return shuffle(arr).slice(0, n); }
+
+  function wrongNames(exclude, n) {
+    return pick(gods.filter(function(g){ return g.id !== exclude; }).map(function(g){ return g.name; }), n);
+  }
+
+  function makeQ(g) {
+    var type = Math.floor(Math.random() * 4);
+    var opts, answer, qtext, qtype, qsym = null;
+
+    if (type === 0) {
+      // Symbol → Name
+      qtype = 'Symbol erkennen';
+      qsym = g.sym;
+      qtext = 'Welchem Gott gehört dieses Symbol?';
+      answer = g.name;
+      opts = shuffle([answer].concat(wrongNames(g.id, 3)));
+    } else if (type === 1) {
+      // Attribut → Gott
+      var attr = g.attrs[Math.floor(Math.random() * Math.min(g.attrs.length, 3))];
+      qtype = 'Attribut zuordnen';
+      qtext = 'Wer trägt als Attribut: „' + attr + '“?';
+      answer = g.name;
+      opts = shuffle([answer].concat(wrongNames(g.id, 3)));
+    } else if (type === 2 && g.parents.length > 0) {
+      // Elternteil → Kind
+      var parentId = g.parents[Math.floor(Math.random() * g.parents.length)];
+      var parent = godMap[parentId];
+      if (!parent) { type = 3; }
+      else {
+        qtype = 'Familienbande';
+        qtext = 'Wer ist ein Kind von ' + parent.name + '?';
+        answer = g.name;
+        opts = shuffle([answer].concat(wrongNames(g.id, 3)));
+      }
+    }
+    if (type === 3 || (type === 2 && g.parents.length === 0)) {
+      // Domäne → Gott
+      var cat = g.cats[0];
+      var label = DL[cat] || cat;
+      qtype = 'Domäne';
+      qtext = 'Wer gehört zur Domäne „' + label + '“?';
+      var samecat = gods.filter(function(x){ return x.id !== g.id && x.cats.indexOf(cat) !== -1; });
+      var wrongpool = gods.filter(function(x){ return x.id !== g.id && x.cats.indexOf(cat) === -1; });
+      answer = g.name;
+      var distractors = pick(wrongpool, 3).map(function(x){ return x.name; });
+      while (distractors.length < 3) distractors.push(wrongNames(g.id, 1)[0]);
+      opts = shuffle([answer].concat(distractors));
+    }
+
+    return { qtype: qtype, qsym: qsym, qtext: qtext, answer: answer, opts: opts, god: g };
+  }
+
+  function genQuestions() {
+    var pool = shuffle(gods).slice(0, TOTAL);
+    return pool.map(makeQ);
+  }
+
+  function startQuiz() {
+    questions = genQuestions();
+    current = 0; score = 0;
+    document.getElementById('quiz-start-screen').style.display = 'none';
+    document.getElementById('quiz-result-screen').style.display = 'none';
+    document.getElementById('quiz-game-screen').style.display = 'block';
+    showQuestion();
+  }
+
+  function showQuestion() {
+    var q = questions[current];
+    document.getElementById('quiz-count').textContent = (current + 1) + ' / ' + TOTAL;
+    document.getElementById('quiz-score-live').textContent = score + ' ★';
+    document.getElementById('quiz-bar').style.width = (current / TOTAL * 100) + '%';
+    document.getElementById('quiz-q-type').textContent = q.qtype;
+    var symEl = document.getElementById('quiz-q-sym');
+    if (q.qsym) { symEl.innerHTML = q.qsym; symEl.style.display = 'block'; } else { symEl.style.display = 'none'; }
+    document.getElementById('quiz-q-text').textContent = q.qtext;
+
+    var optWrap = document.getElementById('quiz-options');
+    optWrap.innerHTML = '';
+    for (var i = 0; i < q.opts.length; i++) {
+      var btn = document.createElement('button');
+      btn.className = 'quiz-opt';
+      btn.textContent = q.opts[i];
+      btn.addEventListener('click', (function(opt){ return function(){ answer(opt); }; }(q.opts[i])));
+      optWrap.appendChild(btn);
+    }
+
+    var fb = document.getElementById('quiz-feedback');
+    fb.className = 'quiz-feedback'; fb.textContent = '';
+    document.getElementById('quiz-next-btn').className = 'quiz-next-btn';
+  }
+
+  function answer(chosen) {
+    var q = questions[current];
+    var opts = document.querySelectorAll('.quiz-opt');
+    var correct = chosen === q.answer;
+    if (correct) score++;
+    for (var i = 0; i < opts.length; i++) {
+      opts[i].setAttribute('disabled', 'true');
+      if (opts[i].textContent === q.answer) opts[i].classList.add(correct ? 'correct' : 'reveal');
+      else if (opts[i].textContent === chosen && !correct) opts[i].classList.add('wrong');
+    }
+    var fb = document.getElementById('quiz-feedback');
+    fb.className = 'quiz-feedback show ' + (correct ? 'ok' : 'fail');
+    fb.textContent = correct
+      ? '✓ Richtig! ' + q.god.name + ' – ' + q.god.tag
+      : '✗ Leider falsch. Richtig wäre: ' + q.answer + ' – ' + q.god.tag;
+    document.getElementById('quiz-next-btn').className = 'quiz-next-btn show';
+  }
+
+  function nextQuestion() {
+    current++;
+    if (current >= TOTAL) { showResult(); return; }
+    showQuestion();
+  }
+
+  function showResult() {
+    document.getElementById('quiz-game-screen').style.display = 'none';
+    document.getElementById('quiz-result-screen').style.display = 'block';
+    document.getElementById('quiz-result-score').textContent = score + ' / ' + TOTAL;
+    var pct = score / TOTAL;
+    var msg = pct >= 0.9 ? 'Exzellent! Du kennst den Olymp wie dein eigenes Zuhause. Zeus wäre stolz.'
+      : pct >= 0.7 ? 'Sehr gut! Dein Wissen ist eines Helden würdig.'
+      : pct >= 0.5 ? 'Solide! Mit etwas mehr Übung wirst du den Olympiern ebenbürtig.'
+      : 'Noch Luft nach oben – lies die Karten nochmal und komm zurück!';
+    document.getElementById('quiz-result-msg').textContent = msg;
+  }
+
+  document.getElementById('quiz-start-btn').addEventListener('click', startQuiz);
+  document.getElementById('quiz-next-btn').addEventListener('click', nextQuestion);
+  document.getElementById('quiz-restart-btn').addEventListener('click', function() {
+    document.getElementById('quiz-result-screen').style.display = 'none';
+    startQuiz();
+  });
+}());
 
 }());
 </script>
