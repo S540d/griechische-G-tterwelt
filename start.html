@@ -126,7 +126,7 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
 </head>
 <body>
 
-<canvas id="stars-canvas"></canvas>
+<canvas id="stars-canvas" aria-hidden="true"></canvas>
 
 <header>
   <div class="hline">
@@ -148,15 +148,15 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
 <div class="panel active" id="pantheon-panel">
   <div class="filter-bar">
     <span class="filter-label">Dom&auml;ne</span>
-    <button class="filter-btn active" data-filter="all">Alle</button>
-    <button class="filter-btn" data-filter="olympier">Olympier</button>
-    <button class="filter-btn" data-filter="himmel">Himmel</button>
-    <button class="filter-btn" data-filter="meer">Meer &amp; Erde</button>
-    <button class="filter-btn" data-filter="unterwelt">Unterwelt</button>
-    <button class="filter-btn" data-filter="krieg">Krieg</button>
-    <button class="filter-btn" data-filter="weisheit">Weisheit</button>
-    <button class="filter-btn" data-filter="liebe">Liebe</button>
-    <button class="filter-btn" data-filter="titan">Titanen</button>
+    <button class="filter-btn active" data-filter="all" aria-pressed="true">Alle</button>
+    <button class="filter-btn" data-filter="olympier" aria-pressed="false">Olympier</button>
+    <button class="filter-btn" data-filter="himmel" aria-pressed="false">Himmel</button>
+    <button class="filter-btn" data-filter="meer" aria-pressed="false">Meer &amp; Erde</button>
+    <button class="filter-btn" data-filter="unterwelt" aria-pressed="false">Unterwelt</button>
+    <button class="filter-btn" data-filter="krieg" aria-pressed="false">Krieg</button>
+    <button class="filter-btn" data-filter="weisheit" aria-pressed="false">Weisheit</button>
+    <button class="filter-btn" data-filter="liebe" aria-pressed="false">Liebe</button>
+    <button class="filter-btn" data-filter="titan" aria-pressed="false">Titanen</button>
   </div>
   <div class="grid-wrap">
     <div class="count-display" id="count-display">Alle 20 Gottheiten</div>
@@ -335,6 +335,9 @@ function mkCard(g, idx) {
   var el = document.createElement('div');
   el.className = 'god-card';
   el.setAttribute('data-cats', g.cats.join(' '));
+  el.setAttribute('role', 'button');
+  el.setAttribute('tabindex', '0');
+  el.setAttribute('aria-label', g.name + ' – Details anzeigen');
   el.style.animationDelay = (idx * 0.05) + 's';
   var ah = '';
   for (var i = 0; i < Math.min(g.attrs.length, 4); i++) ah += '<span class="attr-tag">' + g.attrs[i] + '</span>';
@@ -352,7 +355,8 @@ function mkCard(g, idx) {
       (g.ol ? '<span class="olympian-badge">&#11042; Olympier</span>' : '<span></span>') +
       '<span class="read-more">Details &#8594;</span>' +
     '</div>';
-  el.addEventListener('click', (function(gg){ return function(){ openM(gg); }; }(g)));
+  el.addEventListener('click', (function(gg){ return function(){ openM(gg, el); }; }(g)));
+  el.addEventListener('keydown', (function(gg, card){ return function(e){ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openM(gg, card); } }; }(g, el)));
   return el;
 }
 
@@ -363,8 +367,8 @@ var fbtns = document.querySelectorAll('.filter-btn');
 var countEl = document.getElementById('count-display');
 for (var fi = 0; fi < fbtns.length; fi++) {
   fbtns[fi].addEventListener('click', function () {
-    for (var j = 0; j < fbtns.length; j++) fbtns[j].classList.remove('active');
-    this.classList.add('active');
+    for (var j = 0; j < fbtns.length; j++) { fbtns[j].classList.remove('active'); fbtns[j].setAttribute('aria-pressed', 'false'); }
+    this.classList.add('active'); this.setAttribute('aria-pressed', 'true');
     var f = this.getAttribute('data-filter');
     var cards = document.querySelectorAll('.god-card');
     var vis = 0;
@@ -380,11 +384,13 @@ for (var fi = 0; fi < fbtns.length; fi++) {
 
 // ── MODAL ────────────────────────────────────────────────────
 var overlay = document.getElementById('modal-overlay');
+var _lastFocus = null;
 document.getElementById('close-btn').addEventListener('click', closeM);
 overlay.addEventListener('click', function (e) { if (e.target === overlay) closeM(); });
 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeM(); });
 
-function openM(g) {
+function openM(g, triggerEl) {
+  _lastFocus = triggerEl || document.activeElement;
   document.getElementById('modal-top').style.background = 'linear-gradient(90deg,transparent,' + g.color + ',transparent)';
   document.getElementById('modal-symbol').innerHTML = g.sym;
   document.getElementById('modal-symbol').style.color = g.color;
@@ -407,8 +413,13 @@ function openM(g) {
   }
   overlay.classList.add('open');
   document.body.style.overflow = 'hidden';
+  setTimeout(function(){ document.getElementById('close-btn').focus(); }, 50);
 }
-function closeM() { overlay.classList.remove('open'); document.body.style.overflow = ''; }
+function closeM() {
+  overlay.classList.remove('open');
+  document.body.style.overflow = '';
+  if (_lastFocus) { _lastFocus.focus(); _lastFocus = null; }
+}
 
 // ═══════════════════════════════════════════════════════════════
 // ── TREE ───────────────────────────────────────────────────────
