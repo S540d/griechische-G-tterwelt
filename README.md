@@ -1,5 +1,7 @@
 # OLYMPOS – Die Griechische Götterwelt
 
+**[→ Demo direkt im Browser öffnen](https://htmlpreview.github.io/?https://github.com/S540d/griechische-G-tterwelt/blob/main/start.html)**
+
 Eine interaktive Lernseite über das griechische Pantheon. Alle 20 Gottheiten und Titanen mit Beschreibungen, Attributen, Mythen und einem interaktiven Stammbaum.
 
 ## Features
