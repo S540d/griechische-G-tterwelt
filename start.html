@@ -41,6 +41,12 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
 .filter-btn{font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;padding:6px 14px;border:1px solid var(--gold-dim);background:transparent;color:var(--text-dim);cursor:pointer;transition:all .3s;border-radius:2px}
 .filter-btn:hover{border-color:var(--gold);color:var(--gold-light);background:rgba(201,168,76,.08)}
 .filter-btn.active{background:var(--gold);border-color:var(--gold);color:var(--obsidian);font-weight:700}
+.search-wrap{display:flex;align-items:center;width:100%;max-width:340px;position:relative;margin-top:4px}
+.search-input{width:100%;font-family:'Cinzel',serif;font-size:.72rem;letter-spacing:.1em;padding:6px 32px 6px 12px;background:transparent;border:1px solid var(--gold-dim);color:var(--text);border-radius:2px;outline:none;transition:border-color .3s}
+.search-input::placeholder{color:var(--text-dim)}
+.search-input:focus{border-color:var(--gold)}
+.search-clear{position:absolute;right:8px;background:none;border:none;color:var(--text-dim);cursor:pointer;font-size:13px;line-height:1;padding:0;display:none}
+.search-clear.visible{display:block}
 
 /* GRID */
 .grid-wrap{max-width:1400px;margin:0 auto;padding:36px 20px 80px}
@@ -157,6 +163,10 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
     <button class="filter-btn" data-filter="weisheit" aria-pressed="false">Weisheit</button>
     <button class="filter-btn" data-filter="liebe" aria-pressed="false">Liebe</button>
     <button class="filter-btn" data-filter="titan" aria-pressed="false">Titanen</button>
+    <div class="search-wrap">
+      <input class="search-input" id="search-input" type="search" placeholder="Suchen…" aria-label="Gottheiten suchen" autocomplete="off">
+      <button class="search-clear" id="search-clear" aria-label="Suche leeren">&#10005;</button>
+    </div>
   </div>
   <div class="grid-wrap">
     <div class="count-display" id="count-display">Alle 20 Gottheiten</div>
@@ -335,6 +345,7 @@ function mkCard(g, idx) {
   var el = document.createElement('div');
   el.className = 'god-card';
   el.setAttribute('data-cats', g.cats.join(' '));
+  el.setAttribute('data-search', (g.name + ' ' + g.roman + ' ' + g.attrs.join(' ') + ' ' + g.epithet).toLowerCase());
   el.setAttribute('role', 'button');
   el.setAttribute('tabindex', '0');
   el.setAttribute('aria-label', g.name + ' – Details anzeigen');
@@ -362,25 +373,41 @@ function mkCard(g, idx) {
 
 for (var ci = 0; ci < gods.length; ci++) grid.insertBefore(mkCard(gods[ci], ci), noRes);
 
-// ── FILTER ────────────────────────────────────────────────────
+// ── FILTER + SEARCH ─────────────────────────────────────
 var fbtns = document.querySelectorAll('.filter-btn');
 var countEl = document.getElementById('count-display');
+var searchInput = document.getElementById('search-input');
+var searchClear = document.getElementById('search-clear');
+var activeFilter = 'all';
+
+function applyFilter() {
+  var q = searchInput.value.trim().toLowerCase();
+  searchClear.classList.toggle('visible', q.length > 0);
+  var cards = document.querySelectorAll('.god-card');
+  var vis = 0;
+  for (var k = 0; k < cards.length; k++) {
+    var catMatch = activeFilter === 'all' || cards[k].getAttribute('data-cats').indexOf(activeFilter) !== -1;
+    var textMatch = !q || (cards[k].getAttribute('data-search') || '').indexOf(q) !== -1;
+    var show = catMatch && textMatch;
+    cards[k].classList.toggle('hidden', !show);
+    if (show) vis++;
+  }
+  var activeBtn = document.querySelector('.filter-btn.active');
+  var label = activeBtn ? activeBtn.textContent : '';
+  countEl.textContent = (q ? '„' + searchInput.value.trim() + '“ · ' : '') + vis + ' Gottheit' + (vis !== 1 ? 'en' : '') + (activeFilter !== 'all' ? ' · ' + label : '');
+  noRes.style.display = vis === 0 ? 'block' : 'none';
+}
+
 for (var fi = 0; fi < fbtns.length; fi++) {
   fbtns[fi].addEventListener('click', function () {
     for (var j = 0; j < fbtns.length; j++) { fbtns[j].classList.remove('active'); fbtns[j].setAttribute('aria-pressed', 'false'); }
     this.classList.add('active'); this.setAttribute('aria-pressed', 'true');
-    var f = this.getAttribute('data-filter');
-    var cards = document.querySelectorAll('.god-card');
-    var vis = 0;
-    for (var k = 0; k < cards.length; k++) {
-      var show = f === 'all' || cards[k].getAttribute('data-cats').indexOf(f) !== -1;
-      cards[k].classList.toggle('hidden', !show);
-      if (show) vis++;
-    }
-    countEl.textContent = f === 'all' ? 'Alle ' + vis + ' Gottheiten' : vis + ' Gottheit' + (vis !== 1 ? 'en' : '') + ' \u00B7 ' + this.textContent;
-    noRes.style.display = vis === 0 ? 'block' : 'none';
+    activeFilter = this.getAttribute('data-filter');
+    applyFilter();
   });
 }
+searchInput.addEventListener('input', applyFilter);
+searchClear.addEventListener('click', function() { searchInput.value = ''; searchInput.focus(); applyFilter(); });
 
 // ── MODAL ────────────────────────────────────────────────────
 var overlay = document.getElementById('modal-overlay');
