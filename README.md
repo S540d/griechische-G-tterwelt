@@ -17,17 +17,12 @@ Externe Ressource: [Google Fonts](https://fonts.google.com/) (Cinzel, EB Garamon
 
 ## Lokale Nutzung
 
-```bash
-# Datei einfach im Browser öffnen:
-open start.html
-```
-
-Kein Server erforderlich.
+Die Datei `start.html` direkt im Browser öffnen (Doppelklick, Drag & Drop oder Datei-Menü). Kein Server erforderlich.
 
 ## Enthaltene Gottheiten
 
 | Name | Bereich | Olympier |
-|---|---|---|
+| --- | --- | --- |
 | Zeus | Himmel & Herrscher | ✓ |
 | Hera | Ehe & Familie | ✓ |
 | Poseidon | Meer & Erde | ✓ |
