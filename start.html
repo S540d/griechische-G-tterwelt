@@ -457,15 +457,15 @@ function mkCard(g, idx) {
   return el;
 }
 
-for (var ci = 0; ci < gods.length; ci++) grid.insertBefore(mkCard(gods[ci], ci), noRes);
-countEl.textContent = 'Alle ' + gods.length + ' Gottheiten';
-
 // ── FILTER + SEARCH ─────────────────────────────────────
 var fbtns = document.querySelectorAll('.filter-btn');
 var countEl = document.getElementById('count-display');
 var searchInput = document.getElementById('search-input');
 var searchClear = document.getElementById('search-clear');
 var activeFilter = 'all';
+
+for (var ci = 0; ci < gods.length; ci++) grid.insertBefore(mkCard(gods[ci], ci), noRes);
+countEl.textContent = 'Alle ' + gods.length + ' Gottheiten';
 
 function applyFilter() {
   var q = searchInput.value.trim().toLowerCase();
