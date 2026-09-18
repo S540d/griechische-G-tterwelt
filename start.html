@@ -169,11 +169,31 @@ h1{font-family:'Cinzel Decorative',serif;font-size:clamp(2rem,6vw,4rem);font-wei
 .fact-value{font-size:.93rem;color:var(--text)}
 @media(max-width:600px){.modal-header{flex-direction:column;gap:12px}.modal-facts{grid-template-columns:1fr}.modal-body,.modal-header{padding:18px}}
 .modal-sources{font-size:.85rem;color:var(--text-dim);line-height:1.7;font-style:italic}
+.settings-btn{position:fixed;top:16px;right:16px;z-index:60;width:40px;height:40px;border-radius:50%;background:rgba(15,15,26,.85);border:1px solid var(--gold-dim);color:var(--gold-light);font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(6px);transition:border-color .3s,color .3s}
+.settings-btn:hover,.settings-btn[aria-expanded="true"]{border-color:var(--gold);color:var(--gold)}
+.settings-menu{position:fixed;top:62px;right:16px;z-index:60;min-width:240px;background:var(--deep);border:1px solid var(--gold-dim);border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.7);padding:14px 16px;opacity:0;pointer-events:none;transform:translateY(-8px);transition:opacity .25s,transform .25s}
+.settings-menu.open{opacity:1;pointer-events:all;transform:translateY(0)}
+.settings-menu-title{font-family:'Cinzel',serif;font-size:.7rem;letter-spacing:.2em;color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px;border-bottom:1px solid rgba(201,168,76,.2);padding-bottom:6px}
+.settings-row{font-size:.82rem;color:var(--text);margin-bottom:2px}
+.settings-row-dim{font-size:.75rem;color:var(--text-dim);margin-bottom:10px}
+.settings-link{display:block;font-size:.8rem;color:var(--gold-dim);text-decoration:none;padding:7px 0;border-top:1px solid rgba(201,168,76,.12);transition:color .3s}
+.settings-link:hover,.settings-link:focus{color:var(--gold-light)}
+@media(max-width:600px){.settings-menu{right:12px;left:12px;min-width:auto}}
 </style>
 </head>
 <body>
 
 <canvas id="stars-canvas" aria-hidden="true"></canvas>
+
+<button class="settings-btn" id="settings-btn" type="button" aria-haspopup="true" aria-expanded="false" aria-controls="settings-menu" aria-label="Einstellungen &amp; Über">&#8942;</button>
+<div class="settings-menu" id="settings-menu" role="menu" aria-hidden="true" aria-label="Über dieses Projekt">
+  <div class="settings-menu-title">&Uuml;ber</div>
+  <div class="settings-row">Griechische G&ouml;tterwelt</div>
+  <div class="settings-row settings-row-dim">Stand: September 2026</div>
+  <a class="settings-link" role="menuitem" href="https://s540d.github.io/impressum.html" target="_blank" rel="noopener noreferrer">Impressum</a>
+  <a class="settings-link" role="menuitem" href="https://github.com/S540d/griechische-G-tterwelt" target="_blank" rel="noopener noreferrer">Quellcode (GitHub)</a>
+  <a class="settings-link" role="menuitem" href="https://github.com/S540d/griechische-G-tterwelt/issues" target="_blank" rel="noopener noreferrer">Feedback / Kontakt</a>
+</div>
 
 <header>
   <div class="hline">
@@ -442,7 +462,7 @@ function mkCard(g, idx) {
       '<div class="god-symbol" style="color:' + g.color + '">' + g.sym + '</div>' +
       '<div>' +
         '<div class="god-name">' + g.name + '</div>' +
-        '<div class="god-roman"><span style="font-family:\'Cinzel\',serif;font-size:.6rem;letter-spacing:.1em;color:var(--gold-dim);text-transform:uppercase;font-style:normal">R\u00F6m.</span> ' + g.roman + '</div>' +
+        '<div class="god-roman"><span style="font-family:\'Cinzel\',serif;font-size:.6rem;letter-spacing:.1em;color:var(--gold-dim);text-transform:uppercase;font-style:normal">R\\u00F6m.</span> ' + g.roman + '</div>' +
         '<div class="god-badge" style="background:' + c + '22;color:' + c + ';border:1px solid ' + c + '44">' + l + '</div>' +
       '</div>' +
     '</div>' +
@@ -496,6 +516,27 @@ for (var fi = 0; fi < fbtns.length; fi++) {
 searchInput.addEventListener('input', applyFilter);
 searchClear.addEventListener('click', function() { searchInput.value = ''; searchInput.focus(); applyFilter(); });
 
+// ── SETTINGS MENU (Über) ────────────────────────────────────────
+(function () {
+  var btn = document.getElementById('settings-btn');
+  var menu = document.getElementById('settings-menu');
+  function setOpen(open) {
+    menu.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    menu.setAttribute('aria-hidden', String(!open));
+  }
+  btn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    setOpen(!menu.classList.contains('open'));
+  });
+  document.addEventListener('click', function (e) {
+    if (menu.classList.contains('open') && !menu.contains(e.target) && e.target !== btn) setOpen(false);
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && menu.classList.contains('open')) { setOpen(false); btn.focus(); }
+  });
+}());
+
 // ── MODAL ────────────────────────────────────────────────────
 var overlay = document.getElementById('modal-overlay');
 var _lastFocus = null;
@@ -510,7 +551,7 @@ function openM(g, triggerEl) {
   document.getElementById('modal-symbol').style.color = g.color;
   document.getElementById('modal-name').textContent = g.name;
   document.getElementById('modal-epithet').textContent = g.epithet;
-  document.getElementById('modal-roman').textContent = 'R\u00F6misch: ' + g.roman;
+  document.getElementById('modal-roman').textContent = 'R\\u00F6misch: ' + g.roman;
   document.getElementById('modal-desc').textContent = g.desc;
   var ah = ''; for (var i = 0; i < g.attrs.length; i++) ah += '<span class="modal-attr" style="border-color:' + g.color + '44">' + g.attrs[i] + '</span>';
   document.getElementById('modal-attrs').innerHTML = ah;
