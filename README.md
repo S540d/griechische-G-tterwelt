@@ -1,51 +1,16 @@
 # OLYMPOS – Die Griechische Götterwelt
 
-**[→ Demo direkt im Browser öffnen](https://htmlpreview.github.io/?https://github.com/S540d/griechische-G-tterwelt/blob/main/start.html)**
+**[→ Lernseite öffnen](https://htmlpreview.github.io/?https://github.com/S540d/griechische-G-tterwelt/blob/main/start.html)**
 
-Eine interaktive Lernseite über das griechische Pantheon. Alle 20 Gottheiten und Titanen mit Beschreibungen, Attributen, Mythen und einem interaktiven Stammbaum.
+Eine interaktive Lernseite über das griechische Pantheon: Götter, Titanen und Helden mit Beschreibungen, Symbolen, Mythen und Stammbaum.
 
-## Features
+## Was dich erwartet
 
-- **Pantheon-Übersicht** – Karten für 20 Gottheiten, filterbar nach Domäne (Olympier, Himmel, Meer, Unterwelt, Krieg, Weisheit, Liebe, Titanen)
-- **Stammbaum** – Interaktive SVG-Darstellung der Verwandtschaftsverhältnisse mit Pan/Zoom
-- **Detailansicht** – Modal mit Beschreibung, Attributen, bekannten Mythen und Steckbrief
-- **Animierter Sternenhimmel** – Canvas-Hintergrund
-
-## Technologie
-
-Reines HTML/CSS/JavaScript – keine Frameworks, keine Build-Tools. Eine einzige Datei: `start.html`.
-
-Externe Ressource: [Google Fonts](https://fonts.google.com/) (Cinzel, EB Garamond).
-
-## Lokale Nutzung
-
-Die Datei `start.html` direkt im Browser öffnen (Doppelklick, Drag & Drop oder Datei-Menü). Kein Server erforderlich.
-
-## Enthaltene Gottheiten
-
-| Name | Bereich | Olympier |
-| --- | --- | --- |
-| Zeus | Himmel & Herrscher | ✓ |
-| Hera | Ehe & Familie | ✓ |
-| Poseidon | Meer & Erde | ✓ |
-| Athene | Weisheit & Handwerk | ✓ |
-| Apollon | Sonne & Prophezeiung | ✓ |
-| Artemis | Jagd & Mond | ✓ |
-| Ares | Krieg | ✓ |
-| Aphrodite | Liebe & Schönheit | ✓ |
-| Hephaistos | Feuer & Schmiedekunst | ✓ |
-| Hermes | Bote & Handel | ✓ |
-| Demeter | Ernte & Fruchtbarkeit | ✓ |
-| Dionysos | Wein & Theater | ✓ |
-| Hestia | Herdfeuer & Haus | ✓ |
-| Hades | Unterwelt | – |
-| Persephone | Frühling & Unterwelt | – |
-| Kronos | Titan der Zeit | – |
-| Rhea | Mutter der Götter | – |
-| Prometheus | Titan des Feuers | – |
-| Nike | Siegesgöttin | – |
-| Eros | Gott der Liebe | – |
+- **Pantheon:** 26 Karten, filterbar nach Bereich (Olympier, Himmel, Meer, Unterwelt, Krieg, Weisheit, Liebe, Titanen, Helden) und durchsuchbar
+- **Stammbaum:** Verwandtschaftsverhältnisse als Grafik, verschieb- und zoombar
+- **Detailansicht:** Beschreibung, Attribute, bekannte Mythen, Steckbrief und Quellenangaben
+- **Quiz:** 10 zufällige Fragen zu Symbolen, Attributen, Familie und Zuständigkeiten
 
 ## Lizenz
 
-[LICENSE](LICENSE)
+Siehe [LICENSE](LICENSE).
