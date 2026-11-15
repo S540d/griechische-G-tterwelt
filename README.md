@@ -1,6 +1,6 @@
 # OLYMPOS – Die Griechische Götterwelt
 
-**[→ Lernseite öffnen](https://htmlpreview.github.io/?https://github.com/S540d/griechische-G-tterwelt/blob/main/start.html)**
+**[→ Lernseite öffnen](https://s540d.github.io/griechische-G-tterwelt/)**
 
 Eine interaktive Lernseite über das griechische Pantheon: Götter, Titanen und Helden mit Beschreibungen, Symbolen, Mythen und Stammbaum.
 
