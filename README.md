@@ -13,4 +13,4 @@ Eine interaktive Lernseite über das griechische Pantheon: Götter, Titanen und 
 
 ## Lizenz
 
-Siehe [LICENSE](LICENSE).
+PolyForm Noncommercial 1.0.0 (nicht-kommerzielle Nutzung) — siehe [LICENSE](LICENSE).
